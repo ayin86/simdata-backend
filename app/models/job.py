@@ -1,3 +1,4 @@
+from fastapi import Query
 from sqlalchemy import Column, Integer, String,Text, DateTime
 from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
@@ -21,14 +22,20 @@ class JobModel(Base):
   description = Column(Text)
   
     
-class JobCreate(BaseModel):
+class JobBase(BaseModel):
+  id: int = None 
   title: str
   company: str
   type: str
   skills: str
-  education: str
+  education: str = None
   salary_min: int
   salary_max: int
   contact_info: str
   deadline: str
-  description: str
+  description: str = None
+
+
+class QueryBase(BaseModel):
+  page: int = Query(1, description="Page number", ge=0)
+  pageSize: int = Query(10, description="Number of items per page", ge=1)

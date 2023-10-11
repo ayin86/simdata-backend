@@ -1,3 +1,4 @@
+from fastapi import Query
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
@@ -20,7 +21,7 @@ class UserModel(Base):
   sex = Column(String(10),nullable=True)
   createdate = Column(DateTime,default=datetime.datetime.utcnow())
   
-class UserCreate(BaseModel):
+class UserBase(BaseModel):
   userid: str
   alias: str
   email: str
@@ -28,3 +29,7 @@ class UserCreate(BaseModel):
   password: str
   role: str
   sex: str
+
+class QueryBase(BaseModel):
+  page: int = Query(1, description="Page number", ge=0)
+  pageSize: int = Query(10, description="Number of items per page", ge=1)

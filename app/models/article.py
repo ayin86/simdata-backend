@@ -1,3 +1,4 @@
+from fastapi import Query
 from sqlalchemy import Column, Integer, String,Text, DateTime
 from sqlalchemy.orm import declarative_base
 from pydantic import BaseModel
@@ -20,7 +21,7 @@ class ArticleModel(Base):
   # def __init__(self):
   #   self.createdate = datetime.datetime.utcnow()
     
-class ArticleCreate(BaseModel):
+class ArticleBase(BaseModel):
   # id:int = None
   title:str
   content: str
@@ -29,3 +30,7 @@ class ArticleCreate(BaseModel):
   like_count: int
   dislike_count: int
   # createdate: str = None
+
+class QueryBase(BaseModel):
+  page: int = Query(1, description="Page number", ge=0)
+  pageSize: int = Query(10, description="Number of items per page", ge=1)
